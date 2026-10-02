@@ -1,7 +1,6 @@
 package driver;
 
 import config.ConfigManager;
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Capabilities;
@@ -175,13 +174,10 @@ public final class DriverFactory {
     private static WebDriver createLocalDriver(String browser, MutableCapabilities options) {
         switch (browser) {
             case "chrome":
-                WebDriverManager.chromedriver().setup();
                 return new ChromeDriver((ChromeOptions) options);
             case "firefox":
-                WebDriverManager.firefoxdriver().setup();
                 return new FirefoxDriver((FirefoxOptions) options);
             case "edge":
-                WebDriverManager.edgedriver().setup();
                 return new EdgeDriver((EdgeOptions) options);
             case "safari":
                 // SafariDriver is bundled with Safari on macOS

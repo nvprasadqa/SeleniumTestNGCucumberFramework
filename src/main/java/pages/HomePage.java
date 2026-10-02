@@ -28,6 +28,7 @@ public class HomePage extends BasePage {
      * Default constructor uses thread-local WebDriver from DriverFactory and default explicit wait.
      */
     public HomePage() {
+
         super();
     }
 
