@@ -58,6 +58,7 @@ public abstract class BasePage {
     public void open(String url) {
         logger.info("Navigating to URL: {}", url);
         driver.get(url);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(4));
         waitForPageToBeStable();
     }
 

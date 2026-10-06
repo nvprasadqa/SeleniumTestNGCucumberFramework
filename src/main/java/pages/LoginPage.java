@@ -13,6 +13,8 @@ public class LoginPage extends BasePage {
     private final By userName = By.xpath("//input[@name='username']");
     private final By pwd = By.xpath("//input[@name='password']");
     private final By loginBtn = By.xpath("//button[@type='submit']");
+    private final By loginErrorMessage = By.xpath("//p[text()='Invalid credentials']");
+
 
     /**
      * Default constructor uses thread-local WebDriver from DriverFactory and default explicit wait.
@@ -37,5 +39,12 @@ public class LoginPage extends BasePage {
     public void clickOnLoginButton(){
         driver.findElement(this.loginBtn).click();
     }
+
+    public boolean isLoginErrorMessageDisplayed(){
+
+       return driver.findElement(this.loginErrorMessage).isDisplayed();
+    }
+
+
 
 }
