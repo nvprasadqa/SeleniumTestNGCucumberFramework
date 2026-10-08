@@ -15,6 +15,11 @@ public class LoginPage extends BasePage {
     private final By loginBtn = By.xpath("//button[@type='submit']");
     private final By loginErrorMessage = By.xpath("//p[text()='Invalid credentials']");
 
+    public By getDynamicLoginErrorMessageLocator(String msg){
+
+        return By.xpath("//p[text()='"+msg+"']");
+    }
+
 
     /**
      * Default constructor uses thread-local WebDriver from DriverFactory and default explicit wait.
@@ -43,6 +48,12 @@ public class LoginPage extends BasePage {
     public boolean isLoginErrorMessageDisplayed(){
 
        return driver.findElement(this.loginErrorMessage).isDisplayed();
+    }
+
+    public boolean isLoginDynamicErrorMessageDisplayed(String message){
+
+        By dynamicMessageLocator = getDynamicLoginErrorMessageLocator(message);
+        return driver.findElement(dynamicMessageLocator).isDisplayed();
     }
 
 
