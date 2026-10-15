@@ -211,7 +211,7 @@ public abstract class BasePage {
     protected void scrollIntoView(By locator) {
         logger.info("Scrolling into view: {}", locator);
         WebElement el = waitVisible(locator);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center',inline:'center'});", el);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);;", el);
     }
 
     /**

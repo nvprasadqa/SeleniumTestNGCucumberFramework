@@ -3,7 +3,7 @@ Feature: Application Title & Links Validation
   I want to verify the title and search all the links
   So that I can find information quickly
 
-  @smoke @ui
+   @ui
   Scenario: Search page title and validate displays links results
     Given I am on the home page
     Then the page title should contain "The Internet"

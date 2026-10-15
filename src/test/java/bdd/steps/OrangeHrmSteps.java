@@ -7,19 +7,24 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
+import pages.BuzzPage;
 import pages.DashBoardPage;
 import pages.LoginPage;
 import pages.PimPage;
 import utils.LoggerUtil;
 
 import java.util.List;
+import java.util.Map;
 
 public class OrangeHrmSteps {
 
     private static final Logger logger = LoggerUtil.getLogger(OrangeHrmSteps.class);
     LoginPage loginPage = new LoginPage();
     DashBoardPage dashBoardPage = new DashBoardPage();
+    BuzzPage buzzPage  = new BuzzPage();
     PimPage pimPage = new PimPage();
+    public String firstName = "";
+    public String lastName = "";
 
     @Given("I am on the login page")
     public void i_am_on_the_login_page() {
@@ -71,19 +76,30 @@ public class OrangeHrmSteps {
     @And("i add below employees")
     public void iAddBelowEmployees(DataTable dataTable) throws InterruptedException {
         pimPage.clickOnAddEmployee();
-        List<List<String>> empList = dataTable.asLists(String.class);
-         for(List<String> emp: empList){
-             String fName = emp.get(0);
-             String mName = emp.get(1);
-             String lName = emp.get(2);
+        // using asList apporach
+//        List<List<String>> empList = dataTable.asLists(String.class);
+//         for(List<String> emp: empList){
+//             String fName = emp.get(0);
+//             String mName = emp.get(1);
+//             String lName = emp.get(2);
+//
+//
+//
+//             pimPage.addEmployee(fName,mName,lName);
+//
+//         }
 
-             pimPage.addEmployee(fName,mName,lName);
+        List<Map<String, String>> data = dataTable.asMaps(
+                String.class, String.class
+        );
 
+        for(Map<String, String> employee: data) {
+            firstName = employee.get("firstName");
+            String mName = employee.get("middleName");
+             lastName = employee.get("lastName");
+            pimPage.addEmployee(firstName, mName, lastName);
 
-         }
-
-
-
+        }
 
 
     }
@@ -92,6 +108,59 @@ public class OrangeHrmSteps {
     public void iShouldSeeEmployessAddedSuccessfully() throws InterruptedException {
         boolean results = pimPage.isSuccessEmployeeMessageDisplayed();
         Assert.assertTrue(results, "validating sucessful employee");
+
+    }
+
+    @And("I should validate same employee in Personal details Screen")
+    public void iShouldValidateSameEmployeeInPersonalDetailsScreeen() {
+        pimPage.isEmployeeNameDisplayed(firstName+" "+lastName);
+
+    }
+
+    @When("I provide employee personal details in Personal Details Screen")
+    public void iProvideEmployeePersonalDetailsInPersonalDetailsScreen(DataTable dataTable) throws InterruptedException {
+        List<Map<String, String>> data = dataTable.asMaps(
+                String.class, String.class
+        );
+
+        for(Map<String, String> employee: data) {
+           String dlNumber = employee.get("dLNumber");
+            String dlExpiry = employee.get("licenceExpiryDate");
+            String nationality = employee.get("Nationality");
+            String gender = employee.get("Gender");
+            pimPage.addPersonalDetails(dlNumber, dlExpiry, nationality, gender);
+
+        }
+    }
+
+    @When("User Scrolls page using JavaScript executor")
+    public void userScrollsPageUsingJavaScriptExecutor() throws InterruptedException {
+
+        buzzPage.scrollTObuzzElement();
+        
+    }
+
+    @And("User click on element using JavaScript executor")
+    public void userClickOnElementUsingJavaScriptExecutor() throws InterruptedException {
+        buzzPage.clickOnBuzzPage();
+        
+    }
+
+    @When("User performs mouse hover on question mark icon")
+    public void userPerformsMouseHoverOnQuestionMarkIcon() throws InterruptedException {
+        buzzPage.mouseHoverHelpIcon();
+
+
+        
+    }
+
+    @Then("Help Message should be displayed")
+    public void helpMessageShouldBeDisplayed() {
+    }
+
+    @And("User post a commnent and click on post")
+    public void userPostACommnentAndClickOnPost() {
+        buzzPage.postNewsFeed();
 
     }
 }
