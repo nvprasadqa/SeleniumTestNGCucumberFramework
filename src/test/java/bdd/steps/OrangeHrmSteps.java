@@ -25,6 +25,7 @@ public class OrangeHrmSteps {
     PimPage pimPage = new PimPage();
     public String firstName = "";
     public String lastName = "";
+    public int dashBoardTabsCount = 0;
 
     @Given("I am on the login page")
     public void i_am_on_the_login_page() {
@@ -154,13 +155,28 @@ public class OrangeHrmSteps {
         
     }
 
-    @Then("Help Message should be displayed")
-    public void helpMessageShouldBeDisplayed() {
-    }
-
     @And("User post a commnent and click on post")
     public void userPostACommnentAndClickOnPost() {
         buzzPage.postNewsFeed();
+
+    }
+
+    @When("User finds all the tabs on dashboard screen")
+    public void userFindsAllTheTabsOnDashboardScreen() {
+         dashBoardTabsCount = dashBoardPage.getAllDashboardTabs();
+    }
+
+    @Then("User should be able to validate the tabs count as {int}")
+    public void userShouldBeAbleToValidateTheTabsCountAs(int count) {
+        logger.info(dashBoardTabsCount+" count");
+
+        Assert.assertEquals(count, dashBoardTabsCount, "Validating the tab count on the dashboard");
+
+    }
+
+    @And("User clicks on each tab")
+    public void userClicksOnEachTab() throws InterruptedException {
+        dashBoardPage.clickAllTabs();
 
     }
 }

@@ -9,6 +9,5 @@ Feature: OrangeHRM PIM Module Functionality Add Employee validation
    And User click on element using JavaScript executor
    When User performs mouse hover on question mark icon
    And User post a commnent and click on post
-#   Then Help Message should be displayed
 
 

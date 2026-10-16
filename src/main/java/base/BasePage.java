@@ -132,6 +132,24 @@ public abstract class BasePage {
         return waitUntil().until(ExpectedConditions.elementToBeClickable(locator));
     }
 
+
+    /**
+     * Wait for element located by locator to be clickable and return it.
+     */
+    protected WebElement waitClickable(WebElement element) {
+        logger.debug("Waiting for element to be clickable: {}", element);
+        return waitUntil().until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    protected WebElement waitClickableElementRefreshed(WebElement element) {
+        logger.debug("Waiting for element to be clickable: {}", element);
+        return waitUntil().until(
+                ExpectedConditions.refreshed(
+                        ExpectedConditions.elementToBeClickable(element)));
+    }
+
+
+
     /**
      * Find an element safely (visible) by locator.
      */
@@ -217,10 +235,10 @@ public abstract class BasePage {
     /**
      * JS click helper for stubborn elements.
      */
-    protected void jsClick(By locator) {
+    protected void jsClick(WebElement locator) {
         logger.info("Performing JS click on: {}", locator);
-        WebElement el = waitVisible(locator);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
+        //WebElement el = waitVisible(locator);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", locator);
     }
 
     /**
