@@ -112,7 +112,7 @@ public final class DriverFactory {
 
         int implicit = ConfigManager.implicitWaitSec();
         int pageLoad = Math.max(30, ConfigManager.explicitWaitSec());
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicit));
+        //driver.manage().timeouts().implicitlyWait (Duration.ofSeconds(implicit));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoad));
 
         // Log session details

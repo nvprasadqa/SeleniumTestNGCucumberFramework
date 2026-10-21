@@ -7,6 +7,7 @@ import io.cucumber.java.*;
 import org.apache.logging.log4j.Logger;
 import driver.DriverFactory;
 import org.openqa.selenium.TakesScreenshot;
+import pages.LoginPage;
 import utils.LoggerUtil;
 import utils.ScreenshotUtil;
 
@@ -21,13 +22,15 @@ import utils.ScreenshotUtil;
  */
 public class Hooks {
 
+
     private static final Logger logger = LoggerUtil.getLogger(Hooks.class);
+    private LoginPage loginPage;
 
     /**
      * Before hook to initialize driver for the current thread.
      * DriverFactory is thread-safe and supports local/grid/cloud execution.
      */
-    @Before(order = 0)
+    @Before
     public void beforeScenario(Scenario scenario) {
         logger.info("Cucumber @Before - Initializing driver for scenario: {}", scenario.getName());
         logger.info("Execution config: browser={}, headless={}, executionType={}, baseUrl={}",
@@ -38,7 +41,16 @@ public class Hooks {
     /**
      * After hook to capture diagnostics on failure and cleanup the driver.
      */
-    @After(order = 100)
+
+    @Before(value = "@Login")
+    public void loginIntotheApplication(){
+        loginPage = new LoginPage();
+        loginPage.goTo();
+        loginPage.loginInToTheApplication(ConfigManager.userName(), ConfigManager.password());
+        loginPage.clickOnLoginButton();
+    }
+
+    @After
     public void afterScenario(Scenario scenario) {
         try {
             if (scenario.isFailed()) {

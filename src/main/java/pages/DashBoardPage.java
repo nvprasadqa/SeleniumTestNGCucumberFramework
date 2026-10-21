@@ -6,7 +6,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import utils.LoggerUtil;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DashBoardPage extends BasePage {
 
@@ -15,25 +17,44 @@ public class DashBoardPage extends BasePage {
     private final By pimTab = By.xpath("//span[text()='PIM']");
     private final By dashboardtabs = By.xpath("//ul[@class='oxd-main-menu']/li");
 
-    public void clickOnPimTab(){
+    public By getDynamicTab(String tabName) {
+
+        return By.xpath("//span[text()='" + tabName + "']");
+    }
+
+    public void clickOnPimTab() {
         driver.findElement(this.pimTab).click();
     }
-    public int getAllDashboardTabs(){
+
+    public int getAllDashboardTabs() {
         return driver.findElements(dashboardtabs).size();
 
     }
 
-    public void clickAllTabs() throws InterruptedException {
-        List<WebElement> tabs = driver.findElements(dashboardtabs);
-        logger.info("tabs size: "+tabs.size());
-        for(int i =0;i<tabs.size();i++){
-            logger.info("element xpath value: "+tabs.get(i));
-            logger.info("element xpath text: "+tabs.get(i).getText());
-           // tabs.get(i).click();
-            jsClick(tabs.get(i));
-           // waitClickableElementRefreshed(tabs.get(i));
+    public List<String> getAllTabNames() {
+        return driver.findElements(dashboardtabs).stream().map(ele->ele.getText()).collect(Collectors.toList());
 
+//        List<WebElement> li = driver.findElements(dashboardtabs);
+//
+//        List<String> tabs = new ArrayList<>();
+//        for (WebElement ele : li) {
+//
+//            tabs.add(ele.getText());
+//        }
+//        return tabs;
+
+    }
+
+    public void clickAllTabs() {
+        List<String> names = getAllTabNames();
+        for (String name : names) {
+                driver.findElement(getDynamicTab(name)).click();
+                logger.info("click one " + name);
+            if (name.equals("Maintenance")) {
+                driver.navigate().back();
+            }
         }
+
 
     }
 }

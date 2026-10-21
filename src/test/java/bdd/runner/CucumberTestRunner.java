@@ -2,6 +2,7 @@ package bdd.runner;
 
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
+import org.testng.annotations.DataProvider;
 
 /**
  * Cucumber TestNG runner.
@@ -22,8 +23,8 @@ import io.cucumber.testng.CucumberOptions;
         plugin = {
                 "pretty",
                 "html:reports/cucumber/cucumber-html.html",
-                "json:reports/cucumber/cucumber.json",
-                "junit:reports/cucumber/cucumber.xml"
+//                "json:reports/cucumber/cucumber.json",
+//                "junit:reports/cucumber/cucumber.xml"
         },
         monochrome = true,
         publish = false
@@ -31,4 +32,11 @@ import io.cucumber.testng.CucumberOptions;
 public class CucumberTestRunner extends AbstractTestNGCucumberTests {
     // Default parallelization is handled by TestNG suite/Surefire config.
     // Extend for custom filters (tags) using -Dcucumber.filter.tags="@smoke"
+
+        @DataProvider(parallel = true)
+        @Override
+        public Object[][] scenarios() {
+                return super.scenarios();
+        }
+
 }

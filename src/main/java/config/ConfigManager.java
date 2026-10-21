@@ -173,6 +173,14 @@ public final class ConfigManager {
         return get("browser", "chrome").toLowerCase();
     }
 
+    public static String userName() {
+        return get("userName", "Admin").toLowerCase();
+    }
+
+    public static String password() {
+        return get("password", "admin123").toLowerCase();
+    }
+
     public static boolean headless() {
         return getBoolean("headless", false);
     }
