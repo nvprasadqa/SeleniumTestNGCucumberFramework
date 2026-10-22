@@ -1,5 +1,6 @@
 package bdd.steps;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -8,10 +9,8 @@ import io.cucumber.java.en.When;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.testng.Assert;
-import pages.BuzzPage;
-import pages.DashBoardPage;
-import pages.LoginPage;
-import pages.PimPage;
+import pages.*;
+import utils.JsonUtils;
 import utils.LoggerUtil;
 
 import java.util.List;
@@ -22,11 +21,14 @@ public class OrangeHrmSteps {
     private static final Logger logger = LoggerUtil.getLogger(OrangeHrmSteps.class);
     LoginPage loginPage = new LoginPage();
     DashBoardPage dashBoardPage = new DashBoardPage();
+    ClaimPage claimPage = new ClaimPage();
     BuzzPage buzzPage  = new BuzzPage();
     PimPage pimPage = new PimPage();
     public String firstName = "";
     public String lastName = "";
     public int dashBoardTabsCount = 0;
+
+    String path = "src/test/resources/data/Claim_data.json";
 
     @Given("I am on the login page")
     public void i_am_on_the_login_page() {
@@ -179,6 +181,27 @@ public class OrangeHrmSteps {
     public void userClicksOnEachTab() throws InterruptedException {
         dashBoardPage.clickAllTabs();
 
+    }
+
+    @When("User go to claim tab")
+    public void userGoToClainTab() throws InterruptedException {
+        claimPage.clickOnClaimPage();
+
+    }
+
+    @And("User submit claim from json data")
+    public void userSubmitClaimFromJsonData() throws InterruptedException {
+       List<Map<String, Object>> dataList =  JsonUtils.readListOfMaps(path);
+        Map<String, Object> claim = dataList.get(0);
+        String event = claim.get("event").toString();
+        String currency = claim.get("currency").toString();
+        String remarks = claim.get("remarks").toString();
+        claimPage.submitClaim(event,currency,remarks);
+
+    }
+
+    @Then("Claim should be submitted successfully")
+    public void claimShouldBeSubmittedSuccessfully() {
     }
 }
 

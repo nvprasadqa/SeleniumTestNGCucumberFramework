@@ -1,5 +1,5 @@
 Feature: OrangeHRM PIM Module Functionality Add Employee validation
-  @Login @smoke @regression @addEmployee
+  @Login @smoke @regression @addEmployee @edge
   Scenario: Add multiple employees Validation
     When i navigate to PIM page
     And i add below employees

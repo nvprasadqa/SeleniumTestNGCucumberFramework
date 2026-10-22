@@ -3,6 +3,7 @@ package config;
 
 
 
+import driver.BrowserContext;
 import org.apache.logging.log4j.Logger;
 import utils.LoggerUtil;
 
@@ -172,6 +173,12 @@ public final class ConfigManager {
     public static String browser() {
         return get("browser", "chrome").toLowerCase();
     }
+//
+//    public static String browser() {
+//        String fromContext = BrowserContext.get();
+//        if (fromContext != null) return fromContext;
+//        return System.getProperty("browser", "edge");
+//    }
 
     public static String userName() {
         return get("userName", "Admin").toLowerCase();

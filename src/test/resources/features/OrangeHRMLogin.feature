@@ -1,7 +1,7 @@
 Feature: OrangeHRM Login Functionality validation
 
 
-@smoke @positive
+@smoke @positive @edge
 Scenario: Successful login with valid credentials
   Given I am on the login page
   When User enters username as "Admin" and password as "admin123"

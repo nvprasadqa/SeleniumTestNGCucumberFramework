@@ -3,6 +3,7 @@ package bdd.hooks;
 
 
 import config.ConfigManager;
+import driver.BrowserContext;
 import io.cucumber.java.*;
 import org.apache.logging.log4j.Logger;
 import driver.DriverFactory;
@@ -30,7 +31,24 @@ public class Hooks {
      * Before hook to initialize driver for the current thread.
      * DriverFactory is thread-safe and supports local/grid/cloud execution.
      */
-    @Before
+
+
+    @Before(order = 0)
+    public void setBrowserByTag(Scenario scenario) {
+        // Default from config.properties
+        String browser = ConfigManager.browser();
+
+        // Override by tag: @chrome, @edge, @firefox
+        for (String tag : scenario.getSourceTagNames()) {
+            if (tag.equalsIgnoreCase("@chrome")) browser = "chrome";
+            if (tag.equalsIgnoreCase("@edge")) browser = "edge";
+            if (tag.equalsIgnoreCase("@firefox")) browser = "firefox";
+            if (tag.equalsIgnoreCase("@safari")) browser = "safari";
+        }
+        BrowserContext.set(browser);
+        System.out.println("Scenario: " + scenario.getName() + " -> Browser: " + browser + " | Thread: " + Thread.currentThread().getId());
+    }
+    @Before(order = 1)
     public void beforeScenario(Scenario scenario) {
         logger.info("Cucumber @Before - Initializing driver for scenario: {}", scenario.getName());
         logger.info("Execution config: browser={}, headless={}, executionType={}, baseUrl={}",
